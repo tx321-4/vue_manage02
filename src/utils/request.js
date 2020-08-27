@@ -78,6 +78,7 @@ service.interceptors.response.use(
     }
 
     // code为0视为正常，也有一些局部需要为1或者2，然后到页面具体处理的
+    console.log(response.data)
     return response.data
   },
   error => {

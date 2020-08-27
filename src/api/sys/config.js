@@ -6,6 +6,15 @@ import baseUrl from './baseUrl'
 // const BASE_URL = baseUrl + '/config'
 
 export default {
+  getValue (key) {
+    return request({
+      url: baseUrl + '/config_no_auth/getValue',
+      method: 'get',
+      params: {
+        key
+      }
+    })
+  },
   getValues (keys) {
     return request({
       url: baseUrl + '/config_no_auth/getValues',
