@@ -36,6 +36,7 @@ const user = {
     login ({ commit }, user) {
       return new Promise((resolve, reject) => {
         authApi.login(user.username, user.password).then(res => {
+          Cookies.set(SessionKey, res.token)
           resolve(res)
         }).catch(error => reject(error))
       })

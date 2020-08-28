@@ -165,7 +165,7 @@ export default {
 
 }
 </script>
-<style lang='scss' scoped>
+<style lang='scss'>
 ._layout-header.el-menu--horizontal > .el-menu-item.is-active {
   border-bottom-width: 4px;
 }
