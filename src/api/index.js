@@ -11,5 +11,21 @@ export default {
       method: 'get',
       params
     })
+  },
+  // 修改密码
+  modifyPwd (data) {
+    return request({
+      url: BASE_URL + '/modifyPwd',
+      method: 'post',
+      data
+    })
+  },
+  // 获取登录日志列表
+  getLoginLogList (params) {
+    return request({
+      url: BASE_URL + '/getLoginLogList',
+      method: 'get',
+      params
+    })
   }
 }

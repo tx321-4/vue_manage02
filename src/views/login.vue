@@ -79,7 +79,7 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin: function () {
+    handleLogin () {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
