@@ -54,9 +54,7 @@
       stripe
       row-key="id"
       :size="size"
-      :max-height="maxHeight"
       @selection-change="selectionChange"
-      :summary-method="getSummaryData"
       @sort-change="sortChange"
     >
       <el-table-column fixed v-if="showSelection" type="selection" align="center" width="35" />
@@ -81,14 +79,53 @@
           <span class="c-link" @click="openMenuDialog(row)">查看</span>
         </template>
       </el-table-column>
+      <el-table-column prop="last_login_time" width="130" label="最近登录时间" sortable="custom">
+        <template slot-scope="{row}">
+          <span>{{ row.last_login_time | formatDate}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="create_user_name" width="90" label="录入员"></el-table-column>
+      <el-table-column prop="create_time" width="120" label="创建时间" sortable="custom">
+        <template slot-scope="{row}">
+          <span>{{ row.create_time | formatDate}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="update_time" width="120" label="最近更新时间" sortable="custom">
+        <template slot-scope="{row}">
+          <span>{{ row.update_time | formatDate}}</span>
+        </template>
+      </el-table-column>
+      <!-- slot[column] -->
+      <slot name="column"></slot>
+      <!-- / slot[column] -->
     </el-table>
+    <!-- / 数据表格 -->
+    <!-- 分页 -->
+    <pagination
+      v-show="dataTotal>0"
+      :total="dataTotal"
+      :page.sync="requestParams.page"
+      :limit.sync="requestParams.limit"
+      @pagination="getData"
+    />
+    <!-- / 分页 -->
   </div>
 </template>
 
 <script>
+import api from '@/api/sys/user'
+import Pagination from '@/components/common/Pagination'
 export default {
   name: 'List',
+  components: { Pagination },
   props: {
+    size: {
+      type: String,
+      default: ''
+    },
+    maxHeight: {
+      default: 400
+    },
     init: {
       type: Boolean,
       default: false
@@ -108,6 +145,10 @@ export default {
   data () {
     return {
       inited: false,
+      loading: false,
+      list: [],
+      dataTotal: 0,
+      selectionList: [],
       queryShowMore: this.showMore,
       queryParams: {
         login_name: '',
@@ -135,8 +176,19 @@ export default {
       this.initParams = { ...params }
       this.resetQuery()
     },
+    selectionChange (valueArray) {
+      this.selectionList = valueArray
+    },
+    // 获取数据
     getData () {
+      this.loading = true
+      api.getList({ ...this.requestParams, ...this.params, ...this.initParams }).then(res => {
+        console.log(res)
+        this.list = res.data.list
+        this.dataTotal = res.data.total
 
+        this.loading = false
+      })
     },
     // 查询方法
     query ({ key } = {}) {
@@ -153,6 +205,11 @@ export default {
       this.$refs.formQuery.resetFields()
       this.requestParams.page = 1
       this.query()
+    },
+    sortChange ({ prop, order }) {
+      this.requestParams.sortProp = prop
+      this.requestParams.sortOrder = order
+      this.getData()
     },
     exportExcel () {
 

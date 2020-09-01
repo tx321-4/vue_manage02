@@ -9,7 +9,13 @@
       <el-table-column slot="column" label="操作" fixed="right" align="center" width="70">
         <template slot-scope="{row}">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="edit(row)" />
-          <el-button size="mini" type="danger" icon="el-icon-delete" @click="del(row)" />
+          <el-button
+            size="mini"
+            type="text"
+            style="color:#f78989"
+            icon="el-icon-delete"
+            @click="del(row)"
+          />
         </template>
       </el-table-column>
     </list>

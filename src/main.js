@@ -3,8 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './plugins/element.js'
+import './plugins/moment.js'
 import 'normalize.css'// A modern alternative to CSS resets
 import './styles/custom.scss'
+import './filter'
 Vue.config.productionTip = false
 
 const { mockXHR } = require('../mock')
