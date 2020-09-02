@@ -13,7 +13,7 @@
             <el-button icon="el-icon-refresh" @click="resetQuery"></el-button>
           </el-tooltip>
           <el-tooltip content="导出Excel" placement="top">
-            <el-button icon="el-icon-download" @click="exportExcel"></el-button>
+            <el-button :loading="downloadloading" icon="el-icon-download" @click="exportExcel"></el-button>
           </el-tooltip>
           <el-tooltip content="显示更多查询条件" placement="top">
             <el-button @click="queryShowMore=!queryShowMore">
@@ -115,6 +115,8 @@
 <script>
 import api from '@/api/sys/user'
 import Pagination from '@/components/common/Pagination'
+import { parseTime } from '@/utils'
+
 export default {
   name: 'List',
   components: { Pagination },
@@ -148,6 +150,8 @@ export default {
       loading: false,
       list: [],
       dataTotal: 0,
+      downloadloading: false,
+      downloadList: [],
       selectionList: [],
       queryShowMore: this.showMore,
       queryParams: {
@@ -212,7 +216,32 @@ export default {
       this.getData()
     },
     exportExcel () {
+      this.$confirm('确认导出记录吗？', '提示', {
+        type: 'warning'
+      }).then(() => {
+        this.downloadloading = true
+        api.getDownloadList(this.requestParams).then(res => {
+          this.downloadList = res.data.list || []
+          import('@/vendor/Export2Excel').then(excel => {
+            const tHeader = ['序号', '登录用户名', '用户名称', '企业号ID', '所属角色', '录入员', '创建时间', '最近登录时间']
+            const filterVal = ['id', 'login_name', 'name', 'qywx_user', 'role_names', 'create_user_name', 'create_time', 'last_login_time']
+            const data = this.formatJson(filterVal)
+            excel.export_json_to_excel({
+              header: tHeader,
+              data,
+              filename: '用户列表导出数据' + parseTime(new Date(), '{y}/{m}/{d}')
+            })
+            this.downloadloading = false
+          })
+        })
+      }).catch(() => {
 
+      })
+    },
+    formatJson (filterVal) {
+      return this.downloadList.map(v => filterVal.map(j => {
+        return v[j]
+      }))
     },
     openMenuDialog () {
 

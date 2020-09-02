@@ -12,5 +12,13 @@ export default {
       method: 'get',
       params
     })
+  },
+  getDownloadList (params) {
+    params = commonJs.obj.removeNullKey(params)
+    return request({
+      url: BASE_URL + '/getDownloadList',
+      method: 'get',
+      params
+    })
   }
 }

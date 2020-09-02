@@ -19,9 +19,9 @@ for (let i = 0; i < count; i++) {
     factory_names: '',
     create_user_id: -1,
     create_time: '@datetime',
-    create_user_name: '超级用户',
+    'create_user_name|1': ['张', '李', 'adm'],
     'role_ids|1': ['1', '-1', '2'],
-    'role_names|1': ['张三', '张三', 'admin'],
+    'role_names|1': ['开发员', '超级用户', '管理员'],
     update_time: '@datetime',
     update_user_id: -1,
     last_login_time: '@datetime'
@@ -49,6 +49,33 @@ export default [
         custom: null,
         data: {
           list: pageList,
+          total: mockList.length
+        },
+        message: '',
+        msg: null,
+        success: true,
+        total: null
+      }
+    }
+  },
+  {
+    url: BASE_URL + '/getDownloadList',
+    type: 'get',
+    response: config => {
+      const { name, qywx_user, login_name } = config.query
+
+      const mockList = List.filter(item => {
+        if (login_name && item.login_name.indexOf(login_name) < 0) return false
+        if (name && item.name.indexOf(name) < 0) return false
+        if (qywx_user && item.qywx_user.indexOf(qywx_user) < 0) return false
+        return true
+      })
+
+      return {
+        code: 0,
+        custom: null,
+        data: {
+          list: mockList,
           total: mockList.length
         },
         message: '',
