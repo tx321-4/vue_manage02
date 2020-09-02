@@ -6,6 +6,7 @@ import './plugins/element.js'
 import './plugins/moment.js'
 import 'normalize.css'// A modern alternative to CSS resets
 import './styles/custom.scss'
+import './components'
 import './filter'
 Vue.config.productionTip = false
 
