@@ -3,6 +3,7 @@ import { param2Obj } from '../src/utils'
 
 import config from './sys/config'
 import user from './sys/user'
+import updateRecord from './sys/updateRecord'
 import index from './index/index'
 import auth from './auth'
 
@@ -10,7 +11,8 @@ const mocks = [
   ...config,
   ...auth,
   ...index,
-  ...user
+  ...user,
+  ...updateRecord
 ]
 
 // for front mock
