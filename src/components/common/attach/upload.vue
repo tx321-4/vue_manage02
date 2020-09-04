@@ -111,7 +111,7 @@ export default {
         const index = fileList.indexOf(file)
         fileList.splice(index, 1)
         if (file.status == 'fail' || file.response.code != 0) {
-          this.$norify.error({
+          this.$notify.error({
             title: '上传失败',
             message: '文件[' + file.name + ']上传失败，请稍后重新上传!' + file.response.message || '',
             duration: 0
@@ -138,6 +138,9 @@ export default {
       } else {
         return true
       }
+    },
+    clear () {
+      this.$refs.fileUpload.clearFiles()
     },
     getUploadFiles () {
       return this.$refs.fileUpload.uploadFiles

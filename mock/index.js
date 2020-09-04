@@ -6,10 +6,12 @@ import user from './sys/user'
 import updateRecord from './sys/updateRecord'
 import index from './index/index'
 import auth from './auth'
+import attach from './attach'
 
 const mocks = [
   ...config,
   ...auth,
+  ...attach,
   ...index,
   ...user,
   ...updateRecord

@@ -33,7 +33,8 @@ export default {
   data () {
     return {
       loading: false,
-      list: []
+      list: [],
+      dataTotal: 0
     }
   },
   created () {
@@ -56,17 +57,31 @@ export default {
         this.loading = false
       })
     },
-    push () {
-
+    push (data) {
+      this.list.push(data)
     },
     clear () {
-
+      this.list = []
+      this.dataTotal = 0
     },
-    delAttach () {
-
+    delAttach (item, index) {
+      this.$confirm('此操作将删除该文件, 是否继续？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        attachApi.del(item.id, this.delUrl).then(res => {
+          this.list.splice(index, 1)
+          this.$message({
+            type: 'success',
+            message: '删除成功！'
+          })
+          this.$emit('del')
+        })
+      })
     },
-    download () {
-
+    download (item) {
+      attachApi.down(item.id)
     }
   }
 }

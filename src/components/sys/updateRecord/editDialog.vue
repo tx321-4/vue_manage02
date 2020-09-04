@@ -122,6 +122,8 @@ export default {
         this.$emit('updated', this.form)
       }
       this.resetFields()
+      this.$refs.attachUpload.clear()
+      this.$refs.attachList.clear()
     },
     create () {
       this.loading = true
@@ -137,12 +139,39 @@ export default {
       this.assign(data)
       this.attachParams.table_id = data.id
       if (data.attach_ids) {
-
+        this.$refs.attachList.initData({ attach_ids: data.attach_ids })
       }
+      this.clearValidate()
     },
     assign (data) {
       this.form = { ...this.form, ...data }
       return this
+    },
+    save (status = 0) {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.form.action = status
+          this.update()
+        } else {
+          return false
+        }
+      })
+    },
+    update () {
+      this.loading = true
+      const messageText = this.form.action ? '提交成功' : '保存成功'
+      api.update(this.form).then(res => {
+        this.form.input_status = res.data.input_status
+        this.loading = false
+        this.$message.success(messageText)
+        this.updated = true
+        if (this.form.action == 1) {
+          this.show = false
+        }
+      }).catch(res => {
+        this.loading = false
+        console.log(res)
+      })
     },
     uploaded (res) {
       this.updated = true
