@@ -28,7 +28,10 @@ import attachApi from '@/api/attach'
 export default {
   name: 'textList',
   props: {
-
+    showDel: {
+      type: Boolean,
+      default: false
+    }
   },
   data () {
     return {

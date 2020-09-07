@@ -1,4 +1,10 @@
+import Vue from 'vue'
 export default {
+  // 格式化日期格式
+  formatDate (value, format = 'YYYY-MM-DD HH:mm') {
+    if (!value) return ''
+    return Vue.prototype.$moment(value).format(format)
+  },
   obj: {
     copyByKey (object, keys) {
       const newObject = {}

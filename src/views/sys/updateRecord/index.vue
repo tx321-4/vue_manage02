@@ -14,7 +14,7 @@
             type="text"
             style="color:#f78989"
             icon="el-icon-delete"
-            @click="del(row)"
+            @click="del(row,$index)"
           ></el-button>
         </template>
       </el-table-column>
@@ -41,13 +41,16 @@ export default {
       })
     },
     edit (row) {
-
+      this.$refs.editDialog.open().then(that => {
+        that.initData(row)
+      })
     },
-    del (row) {
-
+    del (row, index) {
+      const data = { row, index }
+      this.$refs.list.del(data)
     },
-    reload () {
-
+    reload (form) {
+      this.$refs.list.list.unshift(form)
     }
   }
 }

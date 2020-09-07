@@ -71,5 +71,22 @@ export default [
         total: null
       }
     }
+  },
+  {
+    url: BASE_URL + '/update',
+    type: 'post',
+    response: config => {
+      return {
+        code: 0,
+        custom: null,
+        data: {
+          input_status: 0
+        },
+        message: '',
+        msg: null,
+        success: true,
+        total: null
+      }
+    }
   }
 ]

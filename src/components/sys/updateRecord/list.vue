@@ -157,6 +157,20 @@ export default {
       this.requestParams.sortProp = prop
       this.requestParams.sortOrder = order
       this.getData()
+    },
+    del (data) {
+      const { row, index } = data
+      const confirmText = '确定删除此更新记录吗？'
+      this.$confirm(confirmText, '提示', {
+        type: 'warning'
+      }).then(() => {
+        api.del(row.id).then(res => {
+          // this.reload()
+          this.list.splice(index, 1)
+          this.$message.success('删除成功')
+          this.$emit('del')
+        })
+      })
     }
   }
 }

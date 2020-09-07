@@ -19,5 +19,19 @@ export default {
       url: BASE_URL + '/create',
       method: 'post'
     })
+  },
+  update (data) {
+    data = commonJs.obj.copyByKey(data, [
+      'id',
+      'action',
+      'title',
+      'update_date',
+      'content'
+    ])
+    return request({
+      url: BASE_URL + '/update',
+      method: 'post',
+      data
+    })
   }
 }

@@ -1,38 +1,23 @@
 <template>
   <div>
-    <el-dialog
-      :title="title"
-      class="c-dialog-fixed"
-      :visible.sync="show"
-      :append-to-body="inDialog"
-      @open="openDialog"
-      @close="closeDialog"
-    >
+    <el-dialog :title="title" :visible.sync="show" @open="openDialog" @close="closeDialog">
       <div v-loading="loading">
         <divider title="参数信息"></divider>
-        <el-form
-          :model="form"
-          :rules="rules"
-          ref="form"
-          label-width="85px;"
-          size="mini"
-          status-icon
-          class="c-form-mini"
-        >
+        <el-form :model="form" :rules="rules" ref="form" label-width="85px" size="mini">
           <el-form-item label="参数名称" prop="key">
             <el-input v-model="form.key" placeholder="参数名称key" :disabled="isEdit"></el-input>
           </el-form-item>
           <el-form-item label="参数值" prop="value">
-            <el-input v-model="form.value" placeholder="参数值value"></el-input>
+            <el-input v-model="form.value" placeholder="参数值"></el-input>
           </el-form-item>
           <el-form-item label="参数说明" prop="remarks">
             <el-input v-model="form.remarks" placeholder="参数说明"></el-input>
           </el-form-item>
         </el-form>
-      </div>
-      <div slot="footer" v-loading="loading">
-        <el-button type="primary" @click="save(0)" :loading="loading">保存</el-button>
-        <el-button @click="show=false">关闭</el-button>
+        <div slot="footer" v-loading="loading">
+          <el-button type="primary" @click="save" :loading="loading">保存</el-button>
+          <el-button @click="show=false">关闭</el-button>
+        </div>
       </div>
     </el-dialog>
   </div>
@@ -40,7 +25,6 @@
 
 <script>
 import api from '@/api/sys/config'
-
 const formInit = {
   isEdit: 0,
   key: '',
@@ -49,26 +33,25 @@ const formInit = {
 }
 export default {
   name: 'EditDialog',
-  props: {
-    inDialog: {
-      type: Boolean,
-      default: false
-    }
-  },
   data () {
     return {
 
-      show: false,
-      resolve: null,
-      loading: false,
-      updated: false,
       form: { ...formInit },
+      show: false,
+      loading: false,
       rules: {
         key: [
           { required: true, message: '请填写参数名称' }
-
+        ],
+        value: [
+          { required: true, message: '请填写参数值' }
+        ],
+        remarks: [
+          { required: true, message: '请填写参数说明' }
         ]
-      }
+      },
+      resolve: null,
+      updated: false
     }
   },
   computed: {
@@ -93,30 +76,14 @@ export default {
         }
       })
     },
-    open () {
-      this.show = true
-      return new Promise((resolve, reject) => {
-        this.resolve = resolve
-      })
-    },
     closeDialog () {
       if (this.updated) {
         this.$emit('updated', this.form)
       }
-      this.resetFields()
-    },
-    initData (data) {
-      this.assign(data)
-      this.clearValidate()
-    },
-    assign (data) {
-      this.form = { ...this.form, ...data }
-      return this
     },
     save () {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.form.action = this.form.isEdit
           this.loading = true
           api.save(this.form).then(res => {
             this.loading = false
@@ -133,7 +100,20 @@ export default {
         }
       })
     },
-
+    open () {
+      this.show = true
+      return new Promise((resolve, reject) => {
+        this.resolve = resolve
+      })
+    },
+    initData (data) {
+      this.assign(data)
+      this.clearValidate()
+    },
+    assign (data) {
+      this.form = { ...this.form, ...data }
+      return this
+    },
     clearValidate () {
       this.$nextTick(() => {
         this.$refs.form && this.$refs.form.clearValidate()
@@ -149,5 +129,5 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style>
 </style>
