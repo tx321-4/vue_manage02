@@ -88,5 +88,20 @@ export default [
         total: null
       }
     }
+  },
+  {
+    url: BASE_URL + '/del',
+    type: 'post',
+    response: config => {
+      return {
+        code: 0,
+        custom: null,
+        data: null,
+        message: '',
+        msg: null,
+        success: true,
+        total: null
+      }
+    }
   }
 ]

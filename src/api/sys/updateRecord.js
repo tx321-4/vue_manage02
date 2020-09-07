@@ -33,5 +33,14 @@ export default {
       method: 'post',
       data
     })
+  },
+  del (id) {
+    return request({
+      url: BASE_URL + '/del',
+      method: 'post',
+      data: {
+        id
+      }
+    })
   }
 }

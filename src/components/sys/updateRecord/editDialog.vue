@@ -1,41 +1,22 @@
 <template>
   <div>
-    <el-dialog
-      :title="title"
-      class="c-dialog-fixed"
-      :visible.sync="show"
-      :append-to-body="inDialog"
-      @open="openDialog"
-      @close="closeDialog"
-    >
+    <el-dialog :title="title" :visible.sync="show" @open="openDialog" @close="closeDialog">
       <div v-loading="loading">
         <divider title="系统更新记录信息"></divider>
-        <el-form
-          :model="form"
-          :rules="rules"
-          ref="form"
-          label-width="85px"
-          size="mini"
-          status-icon
-          class="c-form-mini"
-        >
+        <el-form :model="form" :rules="rules" ref="form" label-width="85px" size="mini" status-icon>
           <el-form-item label="更新标题" prop="title">
             <el-input v-model="form.title" placeholder></el-input>
           </el-form-item>
-          <el-form-item label="更新日期" prop="update_date">
+          <el-form-item label="更新内容" prop="update_date">
             <el-date-picker v-model="form.update_date" value-format="yyyy-MM-dd" style="width: 30%"></el-date-picker>
           </el-form-item>
           <el-form-item label="更新内容" prop="content">
-            <el-input type="textarea" v-model="form.content" rows="5" placeholder></el-input>
-          </el-form-item>
-          <el-form-item label="附件" prop="remarks">
-            <attach-upload ref="attachUpload" :params="attachParams" @uploaded="uploaded"></attach-upload>
-            <attach-list ref="attachList" show-del @del="updated=true"></attach-list>
+            <el-input type="textarea" v-model="form.content" row="5" placeholder></el-input>
           </el-form-item>
         </el-form>
       </div>
       <div slot="footer" v-loading="loading">
-        <el-button type="primary" @click="save(0)" :loading="loading">保存</el-button>
+        <el-button type="primary" @click="save()" :loading="loading">保存</el-button>
         <el-button @click="show=false">关闭</el-button>
       </div>
     </el-dialog>
@@ -44,52 +25,38 @@
 
 <script>
 import api from '@/api/sys/updateRecord'
-import attachUpload from '@/components/common/attach/upload'
-import attachList from '@/components/common/attach/textList'
+
 const formInit = {
-  id: null,
-  input_status: -1,
-  company_id: null,
-  no: '',
-  name: '',
-  address: '',
-  contacts: '',
-  bank: '',
-  remarks: '',
-  supplier_type: '',
-  supplierTypeList: []
+  title: '',
+  update_date: '',
+  content: '',
+  input_status: -1
 }
 export default {
   name: 'EditDialog',
-  components: {
-    attachUpload,
-    attachList
-  },
   data () {
     return {
-      resolve: null,
+      form: { ...formInit },
       show: false,
       loading: false,
       updated: false,
-      form: { ...formInit },
       rules: {
         title: [{ required: true, message: '请填写更新记录的标题' }],
         content: [{ required: true, message: '请填写更新记录的内容' }],
         update_date: [{ required: true, message: '请填写更新记录的日期' }]
       },
-      attachParams: {
-        table_name: 'sys_update_record',
-        table_id: null
-      }
-    }
-  },
-  props: {
-    inDialog: {
-      type: Boolean,
-      default: false
+
+      resolve: null
     }
   },
   computed: {
+    editdialog_status () {
+      if (this.form.input_status >= 0) {
+        return 0
+      } else {
+        return 1
+      }
+    },
     title () {
       let title = '系统更新记录信息'
       if (this.form.input_status >= 0) {
@@ -100,9 +67,6 @@ export default {
       return title
     }
   },
-  mounted () {
-
-  },
   methods: {
     openDialog () {
       this.$nextTick(() => {
@@ -111,19 +75,40 @@ export default {
         }
       })
     },
-    open () {
-      this.show = true
-      return new Promise((resolve, reject) => {
-        this.resolve = resolve
-      })
-    },
     closeDialog () {
       if (this.updated) {
         this.$emit('updated', this.form)
       }
       this.resetFields()
-      this.$refs.attachUpload.clear()
-      this.$refs.attachList.clear()
+    },
+    save () {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.form.action = status
+          this.update()
+        } else {
+          return false
+        }
+      })
+    },
+    update () {
+      this.loading = true
+      const messageText = this.editdialog_status ? '提交成功' : '保存成功'
+      api.update(this.form).then(res => {
+        this.form.input_status = res.data.input_status
+        this.loading = false
+        this.$message.success(messageText)
+        this.updated = true
+      }).catch(res => {
+        this.loading = false
+        console.log(res)
+      })
+    },
+    open () {
+      this.show = true
+      return new Promise((resolve, reject) => {
+        this.resolve = resolve
+      })
     },
     create () {
       this.loading = true
@@ -137,45 +122,11 @@ export default {
     },
     initData (data) {
       this.assign(data)
-      this.attachParams.table_id = data.id
-      if (data.attach_ids) {
-        this.$refs.attachList.initData({ attach_ids: data.attach_ids })
-      }
       this.clearValidate()
     },
     assign (data) {
       this.form = { ...this.form, ...data }
       return this
-    },
-    save (status = 0) {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          this.form.action = status
-          this.update()
-        } else {
-          return false
-        }
-      })
-    },
-    update () {
-      this.loading = true
-      const messageText = this.form.action ? '提交成功' : '保存成功'
-      api.update(this.form).then(res => {
-        this.form.input_status = res.data.input_status
-        this.loading = false
-        this.$message.success(messageText)
-        this.updated = true
-        if (this.form.action == 1) {
-          this.show = false
-        }
-      }).catch(res => {
-        this.loading = false
-        console.log(res)
-      })
-    },
-    uploaded (res) {
-      this.updated = true
-      this.$refs.attachList.push(res)
     },
     clearValidate () {
       this.$nextTick(() => {
@@ -185,7 +136,6 @@ export default {
     resetFields () {
       this.updated = false
       this.form = { ...formInit }
-      this.form.supplierTypeList = []
       this.clearValidate()
       return this
     }
@@ -193,5 +143,5 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style>
 </style>

@@ -3,7 +3,7 @@
     <el-dialog :title="title" :visible.sync="show" @open="openDialog" @close="closeDialog">
       <div v-loading="loading">
         <divider title="参数信息"></divider>
-        <el-form :model="form" :rules="rules" ref="form" label-width="85px" size="mini">
+        <el-form :model="form" :rules="rules" ref="form" label-width="85px" size="mini" status-icon>
           <el-form-item label="参数名称" prop="key">
             <el-input v-model="form.key" placeholder="参数名称key" :disabled="isEdit"></el-input>
           </el-form-item>
@@ -80,6 +80,7 @@ export default {
       if (this.updated) {
         this.$emit('updated', this.form)
       }
+      this.resetFields()
     },
     save () {
       this.$refs.form.validate(valid => {
