@@ -46,8 +46,9 @@ export default {
       })
     },
     del (row, index) {
-      this.$refs.list.del(row)
+      this.$refs.list.del(row, index)
     },
+
     reload (form) {
       form.input_status = 1 // 1:修改：0 ： 添加
       if (form.input_status) {

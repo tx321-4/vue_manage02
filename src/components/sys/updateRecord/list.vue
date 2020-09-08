@@ -76,6 +76,10 @@ export default {
     this.resetQuery()
   },
   methods: {
+    // 刷新数据
+    reload () {
+      this.getData()
+    },
     query () {
       this.queryParams.page = 1
       this.getData()
@@ -92,15 +96,16 @@ export default {
         this.loading = false
       })
     },
-    del (row) {
+    del (row, index) {
       const confirmText = '确定删除此更新记录吗？'
       this.$confirm(confirmText, '提示', {
         type: 'warning'
       }).then(() => {
         api.del(row.id).then(res => {
-          this.reload()
+          // this.reload()
           this.$message.success('删除成功')
-          this.$emit('del')
+          // this.$emit('del')
+          this.list.splice(index, 1)
         })
       })
     }
