@@ -1,5 +1,15 @@
 import Vue from 'vue'
 export default {
+  textareaToHtml (text) {
+    text = text || ''
+    if (text) {
+      text = text.replace(/\r\n/g, '<br>')
+      text = text.replace(/\n/g, '<br>')
+      // 替换所的空格（中文空格、英文空格都会被替换）
+      text = text.replace(/\s/g, '&nbsp;')
+    }
+    return text
+  },
   // 格式化日期格式
   formatDate (value, format = 'YYYY-MM-DD HH:mm') {
     if (!value) return ''
