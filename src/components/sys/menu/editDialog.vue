@@ -73,8 +73,10 @@ export default {
   },
   data () {
     return {
+      resolve: null,
       show: false,
       loading: false,
+      updated: false,
       form: { ...formInit },
       rules: {
         title: [{ required: true, message: '请填写菜单名称' }],
@@ -105,22 +107,61 @@ export default {
   },
   methods: {
     openDialog () {
-
+      this.$nextTick(() => {
+        if (this.resolve) {
+          this.resolve(this)
+        }
+      })
     },
     closeDialog () {
-
+      if (this.updated) {
+        this.$emit('updated', this.form)
+      }
+      this.resetFields()
     },
     openSelectMenuDialog () {
-
+      this.$refs.typeDialog.open().then(that => {
+        that.initData()
+      })
     },
     save () {
 
     },
     selectType (data) {
-
+      this.form.parent_id = data.id
+      this.form.parent_menu = data.title
+      this.$refs.typeDialog.close()
     },
     isDisable (data) {
-
+      const parentIds = (data.parent_ids || '').split(',')
+      return this.isEdit && (data.id == this.form.id || parentIds.indexOf(this.form.id.toString()) >= 0)
+    },
+    assign (data) {
+      // console.log(data)
+      this.form = { ...this.form, ...data }
+      this.form.order = Number(this.form.order)
+      return this
+    },
+    open () {
+      this.show = true
+      return new Promise((resolve, reject) => {
+        this.resolve = resolve
+      })
+    },
+    clearValidate () {
+      this.$nextTick(() => {
+        this.$refs.form && this.$refs.form.clearValidate()
+      })
+    },
+    resetFields () {
+      this.updated = false
+      this.form = { ...formInit }
+      this.clearValidate()
+      return this
+    },
+    initData (data) {
+      this.assign(data)
+      this.clearValidate()
     }
   }
 

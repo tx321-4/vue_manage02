@@ -17,7 +17,7 @@
         @node-click="nodeClick"
         @check="check"
       >
-        <span slot-scope="{node,data}">
+        <span class="_tree-node" slot-scope="{node,data}">
           <span style="font-size: 14px">
             {{data.title}}
             <span v-if="showPath">[{{data.path}}]</span>
@@ -32,13 +32,17 @@
 </template>
 
 <script>
+import api from '@/api/sys/menu'
 export default {
   name: 'TreeList',
   data () {
     return {
       filterText: '',
       loading: false,
-      data: []
+      data: [],
+      initParams: {},
+      requestParams: {
+      }
     }
   },
   props: {
@@ -68,19 +72,61 @@ export default {
       }
     }
   },
+  watch: {
+    filterText (val) {
+      this.$refs.treeList.filter(val)
+    }
+  },
   methods: {
-    filterNode () {
-
+    filterNode (value, data) {
+      if (!value) return true
+      return data.title.toLowerCase().indexOf(value.toLowerCase()) !== -1
     },
-    nodeClick () {
-
+    nodeClick (data, node, component) {
+      // console.log(node.data)
+      this.$emit('node-click', data, node, component)
     },
     check () {
 
+    },
+    initData (params = {}) {
+      this.initParams = { ...params }
+      this.getTreeList()
+    },
+    getTreeList () {
+      this.loading = true
+      api.getTreeList({ ...this.requestParams, ...this.initParams }).then(res => {
+        this.data = this.$commonJs.toTreeData(res.data.list)
+        this.loading = false
+      })
+    },
+    filter (value) {
+      this.filterText = value
+    },
+    clear () {
+      this.data = []
+    },
+    del (node, data) {
+      if (!node.isLeaf) {
+        this.$message.error('此类型下有子菜单，无法删除！')
+        return false
+      }
+      const confirmText = '确定删除此菜单吗？'
+      this.$confirm(confirmText, '提示', {
+        type: 'warning'
+      }).then(() => {
+
+      })
     }
   }
 }
 </script>
 
-<style>
+<style lang='scss' scoped>
+._tree-node {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
+}
 </style>

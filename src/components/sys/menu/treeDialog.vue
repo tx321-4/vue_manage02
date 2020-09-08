@@ -36,6 +36,7 @@ export default {
   },
   data () {
     return {
+      resolve: null,
       show: false
     }
   },
@@ -48,16 +49,39 @@ export default {
       type: Boolean,
       default: false
     },
+    showSelect: {
+      type: Boolean,
+      default: false
+    },
     params: {
       default: () => ({})
     }
   },
   methods: {
     openDialog () {
-
+      this.$nextTick(() => {
+        if (this.resolve) {
+          this.resolve(this)
+        }
+      })
     },
     closeDialog () {
-
+      this.$refs.list.clear()
+    },
+    open () {
+      this.show = true
+      return new Promise((resolve, reject) => {
+        this.resolve = resolve
+      })
+    },
+    initData (params = {}) {
+      this.$refs.list.initData(params)
+    },
+    select (data) {
+      this.$emit('select', data)
+    },
+    close () {
+      this.show = false
     }
   }
 }

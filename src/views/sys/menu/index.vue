@@ -16,7 +16,12 @@
             <span>
               <el-button type="text" icon="el-icon-plus" @click="create(data)"></el-button>
               <el-button type="text" icon="el-icon-edit" @click="edit(node,data)"></el-button>
-              <el-button type="text" icon="el-icon-delete" @click="del(node,data)"></el-button>
+              <el-button
+                type="text"
+                icon="el-icon-delete"
+                style="color:#f78989"
+                @click="del(node,data)"
+              ></el-button>
             </span>
           </template>
         </menu-list>
@@ -69,23 +74,34 @@ export default {
     }
   },
   mounted () {
-
+    this.$refs.menuList.initData()
   },
   methods: {
-    create () {
-
+    create (data = null) {
+      this.$refs.editDialog.open().then(that => {
+        if (data) {
+          that.assign({
+            parent_id: data.id,
+            parent_menu: data.title
+          })
+        }
+      })
     },
-    edit () {
-
+    edit (node, data) {
+      const editData = { ...data }
+      editData.parent_menu = node.parent.data.title
+      this.$refs.editDialog.open().then(that => {
+        that.initData(editData)
+      })
     },
-    del () {
-
+    del (node, data) {
+      this.$refs.menuList.del(node, data)
     },
-    nodeClick () {
-
+    nodeClick (data) {
+      this.nodeData = data
     },
     onlyShow () {
-
+      this.$refs.menuList.filter(this.nodeData.title)
     },
     reload () {
 

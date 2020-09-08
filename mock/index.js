@@ -4,6 +4,7 @@ import { param2Obj } from '../src/utils'
 import config from './sys/config'
 import user from './sys/user'
 import updateRecord from './sys/updateRecord'
+import menu from './sys/menu'
 import index from './index/index'
 import auth from './auth'
 import attach from './attach'
@@ -14,7 +15,8 @@ const mocks = [
   ...attach,
   ...index,
   ...user,
-  ...updateRecord
+  ...updateRecord,
+  ...menu
 ]
 
 // for front mock
