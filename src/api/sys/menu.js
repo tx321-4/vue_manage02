@@ -13,5 +13,20 @@ export default {
       method: 'get',
       params
     })
+  },
+  save (data) {
+    data = commonJs.obj.copyByKey(data, [
+      'id',
+      'title',
+      'path',
+      'order',
+      'parent_id',
+      'api'
+    ])
+    return request({
+      url: BASE_URL + '/save',
+      method: 'post',
+      data
+    })
   }
 }

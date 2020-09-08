@@ -628,5 +628,22 @@ export default [
         code: 0
       }
     }
+  },
+  {
+    url: BASE_URL + '/save',
+    type: 'post',
+    response: config => {
+      return {
+        code: 0,
+        custom: null,
+        data: {
+          id: '192'
+        },
+        message: '',
+        msg: null,
+        success: true,
+        total: null
+      }
+    }
   }
 ]

@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import api from '@/api/sys/menu'
 import typeDialog from './treeDialog'
 const formInit = {
   model: '',
@@ -125,7 +126,23 @@ export default {
       })
     },
     save () {
-
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.loading = true
+          api.save(this.form).then(res => {
+            this.form.id = res.data.id
+            this.loading = false
+            this.$message.success('保存成功')
+            this.updated = true
+            this.show = false
+          }).catch(res => {
+            this.loading = false
+            console.log(res)
+          })
+        } else {
+          return false
+        }
+      })
     },
     selectType (data) {
       this.form.parent_id = data.id
