@@ -95,6 +95,7 @@ export default {
     },
     getTreeList () {
       this.loading = true
+      // console.log(this.initParams)
       api.getTreeList({ ...this.requestParams, ...this.initParams }).then(res => {
         this.data = this.$commonJs.toTreeData(res.data.list)
         this.loading = false
@@ -115,8 +116,18 @@ export default {
       this.$confirm(confirmText, '提示', {
         type: 'warning'
       }).then(() => {
-
+        api.del(data.id).then(res => {
+          this.$refs.treeList.remove(node)
+          this.$message.success('删除成功')
+          this.$emit('del')
+        })
       })
+    },
+    getCheckedKeys (leafOnly = false) {
+      return this.$refs.treeList.getCheckedKeys(leafOnly)
+    },
+    setCheckedKeys (keys, leafOnly) {
+      return this.$refs.treeList.setCheckedKeys(keys, leafOnly)
     }
   }
 }

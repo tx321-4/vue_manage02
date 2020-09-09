@@ -3,13 +3,13 @@ import baseUrl from './baseUrl'
 import commonJs from '@/utils/common'
 // import qs from 'qs'
 
-const BASE_URL = baseUrl + '/menu'
+const BASE_URL = baseUrl + '/role'
 
 export default {
-  getTreeList (params = {}) {
+  getList (params) {
     params = commonJs.obj.removeNullKey(params)
     return request({
-      url: BASE_URL + '/getTreeList',
+      url: BASE_URL + '/getList',
       method: 'get',
       params
     })
@@ -17,11 +17,10 @@ export default {
   save (data) {
     data = commonJs.obj.copyByKey(data, [
       'id',
-      'title',
-      'path',
-      'order',
-      'parent_id',
-      'api'
+
+      'name',
+      'remarks',
+      'menu_ids'
     ])
     return request({
       url: BASE_URL + '/save',
