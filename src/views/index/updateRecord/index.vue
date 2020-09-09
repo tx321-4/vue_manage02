@@ -3,7 +3,7 @@
     <el-form ref="formQuery" :model="queryParams" inline sieze="mini">
       <el-form-item prop="keyword" style="max-width: 150px;">
         <el-input
-          v-model="queryParams.keyword"
+          v-model.trim="queryParams.keyword"
           placeholder="根据关键字查询"
           clearable
           prefix-icon="el-icon-search"

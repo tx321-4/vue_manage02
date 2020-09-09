@@ -12,7 +12,7 @@
       </div>
       <el-form ref="formQuery" :model="queryParams" label-width="68px" inline size="mini">
         <el-form-item label="参数名称" prop="key">
-          <el-input v-model="queryParams.key" clearable @keyup.enter.native="query"></el-input>
+          <el-input v-model.trim="queryParams.key" clearable @keyup.enter.native="query"></el-input>
         </el-form-item>
       </el-form>
     </div>

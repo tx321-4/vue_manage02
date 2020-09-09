@@ -4,13 +4,28 @@
       <el-col :md="16">
         <el-form ref="form" :rules="rules" :model="form" status-icon>
           <el-form-item prop="oldPassword" label="原密码">
-            <el-input type="password" v-model="form.oldPassword" placeholder="输入原来的密码" clearable></el-input>
+            <el-input
+              type="password"
+              v-model.trim="form.oldPassword"
+              placeholder="输入原来的密码"
+              clearable
+            ></el-input>
           </el-form-item>
           <el-form-item prop="newPassword" label="新密码">
-            <el-input type="password" v-model="form.newPassword" placeholder="输入新的密码" clearable></el-input>
+            <el-input
+              type="password"
+              v-model.trim="form.newPassword"
+              placeholder="输入新的密码"
+              clearable
+            ></el-input>
           </el-form-item>
           <el-form-item prop="newPassword2" label="确认密码">
-            <el-input type="password" v-model="form.newPassword2" placeholder="再输入新的密码" clearable></el-input>
+            <el-input
+              type="password"
+              v-model.trim="form.newPassword2"
+              placeholder="再输入新的密码"
+              clearable
+            ></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="modify" :loading="formLoading">修改</el-button>

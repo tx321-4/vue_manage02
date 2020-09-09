@@ -23,7 +23,7 @@
           name="password"
           :type="pwdType"
           @keyup.enter.native="handleLogin"
-          v-model="loginForm.password"
+          v-model.trim="loginForm.password"
           autocomplete="off"
           placeholder="登录密码"
         ></el-input>

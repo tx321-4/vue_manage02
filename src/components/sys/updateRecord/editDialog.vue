@@ -5,13 +5,17 @@
         <divider title="系统更新记录信息"></divider>
         <el-form :model="form" :rules="rules" ref="form" label-width="85px" size="mini" status-icon>
           <el-form-item label="更新标题" prop="title">
-            <el-input v-model="form.title" placeholder></el-input>
+            <el-input v-model.trim="form.title" placeholder></el-input>
           </el-form-item>
           <el-form-item label="更新内容" prop="update_date">
-            <el-date-picker v-model="form.update_date" value-format="yyyy-MM-dd" style="width: 30%"></el-date-picker>
+            <el-date-picker
+              v-model.trim="form.update_date"
+              value-format="yyyy-MM-dd"
+              style="width: 30%"
+            ></el-date-picker>
           </el-form-item>
           <el-form-item label="更新内容" prop="content">
-            <el-input type="textarea" v-model="form.content" row="5" placeholder></el-input>
+            <el-input type="textarea" v-model.trim="form.content" row="5" placeholder></el-input>
           </el-form-item>
         </el-form>
       </div>

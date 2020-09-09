@@ -5,13 +5,13 @@
         <divider title="参数信息"></divider>
         <el-form :model="form" :rules="rules" ref="form" label-width="85px" size="mini" status-icon>
           <el-form-item label="参数名称" prop="key">
-            <el-input v-model="form.key" placeholder="参数名称key" :disabled="isEdit"></el-input>
+            <el-input v-model.trim="form.key" placeholder="参数名称key" :disabled="isEdit"></el-input>
           </el-form-item>
           <el-form-item label="参数值" prop="value">
-            <el-input v-model="form.value" placeholder="参数值"></el-input>
+            <el-input v-model.trim="form.value" placeholder="参数值"></el-input>
           </el-form-item>
           <el-form-item label="参数说明" prop="remarks">
-            <el-input v-model="form.remarks" placeholder="参数说明"></el-input>
+            <el-input v-model.trim="form.remarks" placeholder="参数说明"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" v-loading="loading">

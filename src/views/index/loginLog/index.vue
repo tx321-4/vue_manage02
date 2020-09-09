@@ -3,7 +3,7 @@
     <el-form ref="formQuery" :model="queryParams" inline sieze="mini">
       <el-form-item prop="ip" style="max-width: 150px;">
         <el-input
-          v-model="queryParams.ip"
+          v-model.trim="queryParams.ip"
           placeholder="IP查询"
           clearable
           prefix-icon="el-icon-search"

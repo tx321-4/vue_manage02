@@ -12,10 +12,10 @@
       </div>
       <el-form ref="formQuery" :model="queryParams" label-width="68px" inline size="mini">
         <el-form-item label="更新标题" prop="title">
-          <el-input v-model="queryParams.title" clearable @keyup.enter.native="query"></el-input>
+          <el-input v-model.trim="queryParams.title" clearable @keyup.enter.native="query"></el-input>
         </el-form-item>
         <el-form-item label="更新内容" prop="content">
-          <el-input v-model="queryParams.content" clearable @keyup.enter.native="query"></el-input>
+          <el-input v-model.trim="queryParams.content" clearable @keyup.enter.native="query"></el-input>
         </el-form-item>
       </el-form>
     </div>

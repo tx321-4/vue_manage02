@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loading">
     <div style="margin-bottom: 5px">
-      <el-input placeholder="输入菜单关键字" clearable v-model="filterText"></el-input>
+      <el-input placeholder="输入菜单关键字" clearable v-model.trim="filterText"></el-input>
     </div>
     <div :style="treeStyle">
       <el-tree

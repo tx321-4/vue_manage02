@@ -12,7 +12,7 @@
         <el-form :model="form" :rules="rules" ref="form" label-width="85px" size="mini" status-icon>
           <el-form-item label="上级菜单" prop="parent_id" :inline-message="true">
             <el-input
-              v-model="form.parent_menu"
+              v-model.trim="form.parent_menu"
               placeholder="点击选择，为空则为顶级节点"
               readonly
               @click.native="openSelectMenuDialog"
@@ -36,7 +36,7 @@
             <span style="font-size: 12px">值越小排越前</span>
           </el-form-item>
           <el-form-item label="API" prop="api">
-            <el-input type="textarea" v-model="form.api" rows="4" placeholder></el-input>
+            <el-input type="textarea" v-model.trim="form.api" rows="4" placeholder></el-input>
             <span style="font-size: 12px">* 调用这些api接口时会进行验证用户是否具有此菜单权限</span>
           </el-form-item>
         </el-form>

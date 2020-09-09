@@ -11,10 +11,10 @@
         <divider title="角色信息"></divider>
         <el-form :model="form" :rules="rules" ref="form" label-width="85px" size="mini" status-icon>
           <el-form-item label="角色名称" prop="name">
-            <el-input v-model="form.name" placeholder="此角色的名称"></el-input>
+            <el-input v-model.trim="form.name" placeholder="此角色的名称"></el-input>
           </el-form-item>
           <el-form-item label="角色说明" prop="remarks">
-            <el-input type="textarea" v-model="form.remarks" placeholder="此角色的说明"></el-input>
+            <el-input type="textarea" v-model.trim="form.remarks" placeholder="此角色的说明"></el-input>
           </el-form-item>
           <el-form-item label="菜单权限" prop="menu_ids">
             <menu-list height="350px" show-checkbox ref="menuList"></menu-list>

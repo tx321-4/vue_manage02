@@ -12,10 +12,10 @@
       </div>
       <el-form ref="formQuery" :model="queryParams" label-width="68px" inline size="mini">
         <el-form-item label="角色名称" prop="name">
-          <el-input v-model="queryParams.name" clearable @keyup.enter.native="query"></el-input>
+          <el-input v-model.trim="queryParams.name" clearable @keyup.enter.native="query"></el-input>
         </el-form-item>
         <el-form-item label="角色说明" prop="remarks">
-          <el-input v-model="queryParams.remarks" clearable @keyup.enter.native="query"></el-input>
+          <el-input v-model.trim="queryParams.remarks" clearable @keyup.enter.native="query"></el-input>
         </el-form-item>
       </el-form>
     </div>
