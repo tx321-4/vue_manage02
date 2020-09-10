@@ -8,7 +8,7 @@ const count = 100
 
 for (let i = 0; i < count; i++) {
   List.push(Mock.mock({
-    id: '@increment',
+    'id|1': ['1', '-1', '2'],
     create_time: '@datetime',
     create_user_id: -1,
     create_user_name: '超级用户',

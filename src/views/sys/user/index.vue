@@ -7,14 +7,14 @@
     </div>
     <list ref="list">
       <el-table-column slot="column" label="操作" fixed="right" align="center" width="70">
-        <template slot-scope="{row}">
+        <template slot-scope="{row,$index}">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="edit(row)" />
           <el-button
             size="mini"
             type="text"
             style="color:#f78989"
             icon="el-icon-delete"
-            @click="del(row)"
+            @click="del(row, $index)"
           />
         </template>
       </el-table-column>
@@ -39,13 +39,22 @@ export default {
   },
   methods: {
     create () {
+      this.$refs.editDialog.open().then(that => {
 
+      })
     },
-    edit () {
-
+    edit (row) {
+      console.log(row.id)
+      if (row.id == -1) {
+        this.$message.error('该用户为系统超级用户, 禁止修改！')
+        return false
+      }
+      this.$refs.editDialog.open().then(that => {
+        that.initData(row)
+      })
     },
-    del () {
-
+    del (row, index) {
+      this.$refs.list.del(row, index)
     },
     reload () {
 

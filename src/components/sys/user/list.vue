@@ -172,6 +172,23 @@ export default {
       this.$refs.menuDialog.open().then(that => {
         that.initData({ ids: row.menu_ids, isIds: 1 })
       })
+    },
+    del (row, index) {
+      if (row.id == -1) {
+        this.$message.error('该用户为系统超级用户，禁止删除！')
+        return false
+      }
+      const confirmText = '确定删除此用户吗？'
+      this.$confirm(confirmText, '提示', {
+        type: 'warning'
+      }).then(() => {
+        api.del(row.id).then(res => {
+          // this.reload()
+          this.$message.success('删除成功')
+          // this.$emit('del')
+          this.list.splice(index, 1)
+        })
+      })
     }
   }
 }
